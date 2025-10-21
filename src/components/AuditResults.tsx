@@ -123,7 +123,7 @@ export const AuditResults: React.FC<AuditResultsProps> = ({ result }) => {
       </div>
 
       {/* Quick Wins */}
-      <AccordionSection 
+      <AccordionSection
         title={`Quick Wins (${result.quickWins.length} items)`}
         icon={<Zap className="h-5 w-5 text-green-600" />}
         defaultOpen

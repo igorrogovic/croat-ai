@@ -1,63 +1,74 @@
-import React, { useState } from 'react';
-import { BarChart3, Settings, Key } from 'lucide-react';
+import React from 'react';
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/clerk-react';
+import { LogIn, UserPlus, Key, Settings } from 'lucide-react';
 import { ApiKeyModal } from './ApiKeyModal';
+import { SettingsModal } from './SettingsModal';
 
 interface HeaderProps {
   apiKey?: string;
   onApiKeyChange: (apiKey: string) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ apiKey, onApiKeyChange }) => {
-  const [showApiModal, setShowApiModal] = useState(false);
-
-  const hasApiKey = apiKey && apiKey.length > 0;
+export function Header({ apiKey, onApiKeyChange }: HeaderProps) {
+  const [showApiModal, setShowApiModal] = React.useState(false);
+  const [showSettingsModal, setShowSettingsModal] = React.useState(false);
 
   return (
     <>
-      <header className="sticky top-0 bg-white shadow-sm border-b border-gray-200 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 bg-blue-600 rounded-lg">
-                <BarChart3 className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">CRO Audit Tool</h1>
-                <p className="text-sm text-gray-600">Professional Conversion Rate Optimization Analysis</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:flex items-center space-x-2">
-                <div className={`w-2 h-2 rounded-full ${hasApiKey ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                <span className="text-sm text-gray-500">
-                  {hasApiKey ? 'API Connected' : 'API Not Configured'}
-                </span>
-              </div>
+      <header className="absolute top-0 left-0 right-0 z-20">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="text-lg font-bold text-slate-800"></div>
+          <div className="flex items-center gap-4">
+            <SignedOut>
               <button
                 onClick={() => setShowApiModal(true)}
-                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                  hasApiKey 
-                    ? 'bg-green-100 text-green-800 hover:bg-green-200' 
-                    : 'bg-red-100 text-red-800 hover:bg-red-200'
-                }`}
-                aria-label="Configure API Key"
+                className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-md bg-white/50 backdrop-blur-sm border border-white/60 hover:bg-white/70 transition-colors"
               >
-                <Key className="h-4 w-4" />
-                <span className="hidden sm:inline">
-                  {hasApiKey ? 'API Key Set' : 'Set API Key'}
-                </span>
+                <Key className="w-4 h-4 text-slate-600" />
+                <span className="text-sm font-medium text-slate-700">Set API Key</span>
               </button>
-            </div>
+              <SignInButton mode="modal">
+                <button className="text-sm font-medium text-slate-700 hover:text-blue-600">
+                  Sign In
+                </button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors">
+                  <UserPlus className="w-4 h-4" />
+                  <span className="text-sm font-medium">Sign Up</span>
+                </button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <button
+                onClick={() => setShowSettingsModal(true)}
+                className="p-2 rounded-full bg-white/50 backdrop-blur-sm border border-white/60 hover:bg-white/70 transition-colors"
+              >
+                <Settings className="w-5 h-5 text-slate-600" />
+              </button>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
           </div>
         </div>
       </header>
 
-      <ApiKeyModal
-        isOpen={showApiModal}
-        onClose={() => setShowApiModal(false)}
-        onSave={onApiKeyChange}
-        currentApiKey={apiKey}
-      />
+      <SignedOut>
+        <ApiKeyModal
+          isOpen={showApiModal}
+          onClose={() => setShowApiModal(false)}
+          onSave={onApiKeyChange}
+          currentApiKey={apiKey}
+        />
+      </SignedOut>
+      
+      <SignedIn>
+        <SettingsModal
+          isOpen={showSettingsModal}
+          onClose={() => setShowSettingsModal(false)}
+          apiKey={apiKey}
+          onApiKeyChange={onApiKeyChange}
+        />
+      </SignedIn>
     </>
   );
-};
+}

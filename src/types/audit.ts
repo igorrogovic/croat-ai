@@ -12,7 +12,7 @@ export interface AuditRecommendation {
 export interface QuickWin {
   id: string;
   change: string;
-  cost: string;
+  effort: 'High' | 'Medium' | 'Low';
   impact: 'High' | 'Medium' | 'Low';
   priority: 'High' | 'Medium' | 'Low';
 }

@@ -28,7 +28,7 @@ const generateFallbackAudit = async (
   await new Promise(resolve => setTimeout(resolve, 400));
 
   // Return basic fallback audit
-  return {
+  const fallbackResult = {
     id: Date.now().toString(),
     websiteUrl,
     websiteType,
@@ -40,8 +40,8 @@ const generateFallbackAudit = async (
         observation: 'API key not configured - showing demo recommendations',
         strengths: 'Clean website structure',
         suggestedImprovement: 'Configure your OpenAI API key to get real, personalized audit recommendations',
-        impact: 'High',
-        effort: 'Low',
+        impact: 'High' as const,
+        effort: 'Low' as const,
         section: 'Homepage',
         pageType: 'Homepage'
       }
@@ -50,9 +50,9 @@ const generateFallbackAudit = async (
       {
         id: 'qw-fallback-1',
         change: 'Configure OpenAI API key for real recommendations',
-        cost: 'Free (requires API key)',
-        impact: 'High',
-        priority: 'High'
+        effort: 'Low' as const,
+        impact: 'High' as const,
+        priority: 'High' as const
       }
     ],
     abTests: [
@@ -70,13 +70,15 @@ This is a demonstration of the CRO Audit Tool. To get real, personalized recomme
 
 With a valid API key, you'll receive:
 - 15-25 specific, actionable recommendations
-- 8-12 quick wins with cost estimates  
+- 8-12 quick wins with effort estimates
 - 4-6 A/B test ideas with expected lift
 - Analysis tailored to your ${websiteType.toLowerCase()} website and ${targetMarket} market
 
 The audit will cover navigation, homepage optimization, mobile experience, trust signals, and psychological persuasion principles.`,
     generatedAt: Date.now()
   };
+
+  return fallbackResult;
 };
 
 export const generateAudit = async (

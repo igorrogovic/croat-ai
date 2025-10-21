@@ -75,14 +75,14 @@ RESPONSE FORMAT: You must respond with valid JSON only, no additional text. The 
     {
       "id": "unique-id",
       "change": "specific change description",
-      "cost": "cost estimate",
+      "effort": "High|Medium|Low",
       "impact": "High|Medium|Low",
       "priority": "High|Medium|Low"
     }
   ],
   "abTests": [
     {
-      "id": "unique-id", 
+      "id": "unique-id",
       "testName": "descriptive test name",
       "frictionPoint": "specific problem being addressed",
       "expectedLift": "percentage improvement estimate",
@@ -93,7 +93,7 @@ RESPONSE FORMAT: You must respond with valid JSON only, no additional text. The 
 
 REQUIREMENTS:
 - Generate 15-25 recommendations covering all major sections
-- Include 8-12 quick wins with realistic cost estimates
+- Include 8-12 quick wins with effort estimates (High/Medium/Low)
 - Provide 4-6 A/B test ideas with expected lift percentages
 - Focus on conversion optimization, not SEO
 - Use specific UI/UX details (button sizes, colors, positioning)
@@ -161,6 +161,30 @@ Focus on realistic, implementable improvements with specific design and technica
 
       onProgress('Finalizing audit...');
 
+      // Normalize helpers to ensure consistent values
+      const normalizeHML = (value: unknown): 'High' | 'Medium' | 'Low' => {
+        const v = String(value || '').toLowerCase();
+        if (v.startsWith('h')) return 'High';
+        if (v.startsWith('l')) return 'Low';
+        if (v.startsWith('m')) return 'Medium';
+        return 'Medium';
+      };
+      const deriveEffortFromCost = (cost: unknown): 'High' | 'Medium' | 'Low' => {
+        const c = String(cost || '').toLowerCase();
+        if (!c) return 'Medium';
+        if (/free|low|minor|quick|simple|<\$?100|under\s*\$?100/.test(c)) return 'Low';
+        if (/medium|~|\$?100-?\$?1000|\$?1\d\d|\$?\d{2,3}/.test(c)) return 'Medium';
+        if (/high|significant|substantial|>\$?1000|\$?\d{4,}/.test(c)) return 'High';
+        return 'Medium';
+      };
+      const normalizedQuickWins = (parsedResponse.quickWins || []).map((qw: any) => ({
+        id: qw.id,
+        change: qw.change,
+        impact: normalizeHML(qw.impact),
+        effort: qw.effort ? normalizeHML(qw.effort) : deriveEffortFromCost(qw.cost),
+        priority: normalizeHML(qw.priority),
+      }));
+
       // Validate and structure the response
       const auditResult: AuditResult = {
         id: Date.now().toString(),
@@ -169,11 +193,18 @@ Focus on realistic, implementable improvements with specific design and technica
         targetMarket,
         mode,
         recommendations: parsedResponse.recommendations || [],
-        quickWins: parsedResponse.quickWins || [],
+        quickWins: normalizedQuickWins,
         abTests: parsedResponse.abTests || [],
         introduction: parsedResponse.introduction || 'Audit completed successfully.',
         generatedAt: Date.now()
       };
+
+      // Validate that we have reasonable data
+      if (auditResult.recommendations.length === 0) {
+        throw new Error('No recommendations were generated. Please try again.');
+      }
+
+      return auditResult;
 
       // Validate that we have reasonable data
       if (auditResult.recommendations.length === 0) {
