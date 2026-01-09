@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copado Demo Messaging Framework (Audit Based)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00A3E0;
+            --secondary: #00D2BE;
+            --dark-bg: #0F172A;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 163, 224, 0.1) 0%, transparent 60%);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+        }
+
+        .framework-note {
+            background: rgba(255, 243, 205, 0.1);
+            border: 1px dashed #FFC107;
+            color: #FFC107;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .stat {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <section style="text-align: center; padding-top: 120px;">
+        <div class="container">
+            <div class="framework-note">Audit Fix #12, #17: Clarify Product & Purpose</div>
+            <h1 style="font-size: 3.5rem; margin-bottom: 20px;">Accelerate Software Delivery with Our All-in-One DevOps
+                Platform</h1>
+
+            <div class="framework-note">Audit Fix #36: Address Pain Points (Delays)</div>
+            <p style="font-size: 1.25rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px;">
+                Eliminate costly deployment delays and enhance collaboration with the #1 native, end-to-end DevOps
+                solution for Salesforce.
+            </p>
+
+            <div class="framework-note">Audit Fix #27, #122: Consolidated CTA</div>
+            <a href="#" class="btn">Schedule Your Personalized Demo &rarr;</a>
+
+            <p style="font-size: 0.9rem; margin-top: 24px; color: var(--text-muted);">
+                Trusted by 15,000+ Salesforce Users
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 50px;">Why Teams Choose Copado?</h2>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="framework-note">Fix #41: Specific Metrics</div>
+                    <div class="stat">5x</div>
+                    <h3>Faster Deployments</h3>
+                    <p>Launch your Salesforce projects in under 60 seconds. Stop waiting for scripts.</p>
+                </div>
+
+                <div class="card">
+                    <div class="stat">30%</div>
+                    <h3>Reduced Errors</h3>
+                    <p>Automated quality gates catch bugs before they hit production.</p>
+                </div>
+
+                <div class="card">
+                    <div class="stat">100%</div>
+                    <h3>Native Security</h3>
+                    <p>Data never leaves the Salesforce trust boundary. FedRAMP Ready.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="grid-2" style="align-items: center;">
+                <div>
+                    <div class="framework-note">Fix #89: Authentic Testimonials</div>
+                    <h2>"In a worst-case scenario, it used to take us 1-2 days. Now it takes 5 minutes."</h2>
+                    <p style="margin-top: 20px;">
+                        <strong>Holger Teufel</strong><br>
+                        <span style="color: var(--text-muted);">Head of Lead to Order, XYZ Corp</span>
+                    </p>
+                </div>
+                <div>
+                    <!-- Video Placeholder -->
+                    <div class="card"
+                        style="aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 3rem;">▶️</div>
+                            <p>See the Platform in Action</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section style="text-align: center;">
+        <div class="container">
+            <div class="framework-note">Fix #128: Low-Risk Offer</div>
+            <h2>Ready to Transform Your Release Process?</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">
+                Join the 75% of teams that improved efficiency by adopting Copado.
+            </p>
+
+            <div class="card" style="max-width: 450px; margin: 0 auto; text-align: left;">
+                <h3 style="margin-bottom: 20px;">Book Your Demo</h3>
+                <form>
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 0.9rem;">Work Email</label>
+                        <input type="email" placeholder="name@company.com"
+                            style="width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 6px; color: white;">
+                    </div>
+                    <button type="button" class="btn" style="width: 100%;">Get Started</button>
+                    <p style="text-align: center; font-size: 0.8rem; margin-top: 10px; color: var(--text-muted);">No
+                        credit card required. Fast setup.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-import { AuditResult, AuditRecommendation, QuickWin, ABTest } from '../types/audit';
+import { AuditResult } from '../types/audit';
 
 interface OpenAIResponse {
   choices: Array<{
@@ -9,6 +9,21 @@ interface OpenAIResponse {
 }
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
+
+const DESIGN_CSS = `
+:root { --primary: #00A3E0; --secondary: #00D2BE; --dark-bg: #0F172A; --card-bg: rgba(255, 255, 255, 0.05); --border: rgba(255, 255, 255, 0.1); --text-main: #F1F5F9; --text-muted: #94A3B8; }
+body { font-family: 'Inter', sans-serif; background-color: var(--dark-bg); color: var(--text-main); line-height: 1.6; margin: 0; background-image: radial-gradient(circle at 50% 0%, rgba(0, 163, 224, 0.1) 0%, transparent 60%); }
+.container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+section { padding: 80px 0; border-bottom: 1px solid var(--border); }
+h1, h2, h3 { font-family: 'Outfit', sans-serif; color: #fff; }
+.framework-note { background: rgba(255, 243, 205, 0.1); border: 1px dashed #FFC107; color: #FFC107; padding: 8px 12px; font-size: 0.8rem; border-radius: 4px; margin-bottom: 16px; display: inline-block; }
+.btn { display: inline-block; padding: 16px 32px; border-radius: 50px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; text-decoration: none; font-weight: 600; transition: transform 0.2s; border: none; cursor: pointer; }
+.btn:hover { transform: translateY(-2px); }
+.card { background: var(--card-bg); border: 1px solid var(--border); padding: 30px; border-radius: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+.stat { font-size: 2.5rem; font-weight: 800; color: var(--secondary); }
+`;
 
 export class OpenAIClient {
   private apiKey: string;
@@ -29,6 +44,7 @@ export class OpenAIClient {
         messages,
         temperature: 0.7,
         max_tokens: 4000,
+        response_format: { type: "json_object" }
       }),
     });
 
@@ -48,81 +64,222 @@ export class OpenAIClient {
     return data.choices[0]?.message?.content || '';
   }
 
-  private createSystemPrompt(websiteType: string, mode: string): string {
-    const tone = mode === 'Advanced' ? 'technical and detailed' : 'approachable and educational';
-    
-    return `You are a senior CRO (Conversion Rate Optimization) consultant with 10+ years of experience auditing ${websiteType.toLowerCase()} websites. Your task is to generate a comprehensive audit with specific, actionable recommendations.
+  private createSystemPrompt(websiteType: string): string {
+    return `You are an elite CRO Agency Team comprising: Strategist, Psychologist, UX Designer, and Copywriter.
 
-TONE: Use a ${tone} tone. ${mode === 'Advanced' ? 'Include specific metrics, technical implementations, and industry benchmarks.' : 'Explain technical terms and provide clear, easy-to-understand guidance.'}
+Your task is to conduct a **Comprehensive Team Audit** of a ${websiteType} website.
 
-RESPONSE FORMAT: You must respond with valid JSON only, no additional text. The JSON should have this exact structure:
+**STEP 1: DETAILED HEURISTIC ANALYSIS (7 Pillars)**
+Evaluate the side on strictly these pillars:
+1. Orient Upon Entrance (H1, Message Match)
+2. Minimize Distraction (Layout, Links)
+3. Value Proposition (Why Us?)
+4. Reduce Anxiety (Trust, Proof)
+5. Make it Easy (UX, CTA)
+6. Pricing & Offer
+7. Copywriting
 
+**STEP 2: ACTIONABLE RECOMMENDATIONS**
+Generate specific, prioritized recommendations based on the analysis.
+
+RESPONSE FORMAT: You must respond with valid JSON only. Structure:
 {
-  "introduction": "markdown string (200-300 words)",
+  "introduction": "markdown (Executive summary)",
+  "heuristicAnalysis": [
+      {
+          "category": "1. Orient Upon Entrance",
+          "items": [
+              { "question": "Does H1 explain WHAT it is?", "score": 3, "observation": "...", "recommendation": "..." },
+              { "question": "Is the audience clear?", "score": 1, "observation": "...", "recommendation": "..." }
+          ]
+      },
+      {
+          "category": "2. Minimize Distraction",
+          "items": [
+              { "question": "...", "score": 0, "observation": "...", "recommendation": "..." }
+          ]
+      },
+      {
+          "category": "3. Value Proposition",
+          "items": [
+              { "question": "...", "score": 0, "observation": "...", "recommendation": "..." }
+          ]
+      },
+      {
+          "category": "4. Reduce Anxiety",
+          "items": [
+              { "question": "...", "score": 0, "observation": "...", "recommendation": "..." }
+          ]
+      },
+      {
+          "category": "5. Make it Easy",
+          "items": [
+              { "question": "...", "score": 0, "observation": "...", "recommendation": "..." }
+          ]
+      },
+      {
+          "category": "6. Pricing & Offer",
+          "items": [
+              { "question": "...", "score": 0, "observation": "...", "recommendation": "..." }
+          ]
+      },
+      {
+          "category": "7. Copywriting",
+          "items": [
+              { "question": "...", "score": 0, "observation": "...", "recommendation": "..." }
+          ]
+      }
+  ],
   "recommendations": [
-    {
-      "id": "unique-id",
-      "observation": "specific issue found",
-      "strengths": "positive aspects noted",
-      "suggestedImprovement": "actionable fix with specific details",
-      "impact": "High|Medium|Low",
-      "effort": "High|Medium|Low", 
-      "section": "Navigation|Homepage|Product Pages|Category Pages|Landing Pages|Form Pages|Mobile Experience|Copywriting|Tech & Load Time|Trust Signals|Psychological Persuasion",
-      "pageType": "Homepage|Category Pages|Product Pages|Landing Pages|Form Pages"
-    }
+      {
+          "id": "rec_1",
+          "pageType": "Homepage",
+          "section": "Hero",
+          "observation": "Current headline is vague and doesn't state the USP.",
+          "strengths": "Good contrast on the CTA button.",
+          "suggestedImprovement": "Rewrite H1 to focus on benefit X using the 'How to [Benefit] without [Pain]' formula.",
+          "impact": "High",
+          "effort": "Low",
+          "priority": "High"
+      }
   ],
   "quickWins": [
-    {
-      "id": "unique-id",
-      "change": "specific change description",
-      "effort": "High|Medium|Low",
-      "impact": "High|Medium|Low",
-      "priority": "High|Medium|Low"
-    }
+      {
+          "id": "qw_1",
+          "change": "Change CTA color to...",
+          "impact": "Medium",
+          "effort": "Low",
+          "priority": "High"
+      }
   ],
   "abTests": [
-    {
-      "id": "unique-id",
-      "testName": "descriptive test name",
-      "frictionPoint": "specific problem being addressed",
-      "expectedLift": "percentage improvement estimate",
-      "description": "detailed test description"
-    }
+      {
+          "id": "test_1",
+          "hypothesis": "Changing the headline will...",
+          "variantA": "Current Headline",
+          "variantB": "Proposed Headline"
+      }
+  ],
+  "pxlTests": [
+      {
+          "id": "pxl_1",
+          "title": "Hero Video Background",
+          "hypothesis": "Replacing static hero with video will increase engagement by demonstrating value immediately.",
+          "isAboveFold": true,
+          "isNoticeableIn5Sec": true,
+          "addsOrRemoves": true,
+          "highTraffic": true,
+          "addressedIssue": true,
+          "easeOfImplementation": "Medium",
+          "score": 0
+      },
+      {
+          "id": "pxl_2",
+          "title": "CTA Button Color & Copy Test",
+          "hypothesis": "Changing CTA button from blue to high-contrast color with action-oriented copy will increase click-through rate by 15%.",
+          "isAboveFold": true,
+          "isNoticeableIn5Sec": true,
+          "addsOrRemoves": false,
+          "highTraffic": true,
+          "addressedIssue": true,
+          "easeOfImplementation": "Low",
+          "score": 0
+      },
+      {
+          "id": "pxl_3",
+          "title": "Social Proof Section Placement",
+          "hypothesis": "Moving testimonials and trust badges above the fold will increase conversion rate by reducing friction and building credibility earlier.",
+          "isAboveFold": true,
+          "isNoticeableIn5Sec": true,
+          "addsOrRemoves": true,
+          "highTraffic": true,
+          "addressedIssue": true,
+          "easeOfImplementation": "Medium",
+          "score": 0
+      },
+      {
+          "id": "pxl_4",
+          "title": "Form Field Reduction",
+          "hypothesis": "Reducing lead capture form from 5 fields to 3 (email, name, company) will increase form submission rate by 25%.",
+          "isAboveFolk": false,
+          "isNoticeableIn5Sec": false,
+          "addsOrRemoves": false,
+          "highTraffic": true,
+          "addressedIssue": true,
+          "easeOfImplementation": "Low",
+          "score": 0
+      }
   ]
 }
 
-REQUIREMENTS:
-- Generate 15-25 recommendations covering all major sections
-- Include 8-12 quick wins with effort estimates (High/Medium/Low)
-- Provide 4-6 A/B test ideas with expected lift percentages
-- Focus on conversion optimization, not SEO
-- Use specific UI/UX details (button sizes, colors, positioning)
-- Reference established UX principles and psychological triggers
-- Ensure all recommendations are actionable and specific`;
+IMPORTANT:
+- Populate "heuristicAnalysis" with at least 2-3 specific questions/checks per category.
+- "score" is 0-3 (3 is best).
+- Be extremely specific in "observation" and "recommendation".
+- Ensure "recommendations" array is populated with explicitly valid "impact", "effort", "priority" (High/Medium/Low).
+- CRITICAL: For each "recommendations" item, you MUST populate "observation", "strengths", and "suggestedImprovement". The "pageType" "Homepage" is the most important one.
+- POPULATE "pxlTests" with 3-4 High-Impact Landing Page test ideas.
+`;
   }
 
-  private createUserPrompt(websiteUrl: string, websiteType: string, targetMarket: string): string {
-    const pageTypes = websiteType === 'E-commerce' 
-      ? 'Homepage, Category Pages, Product Pages'
-      : 'Homepage, Landing Pages, Form Pages';
+  private createDesignPrompt(websiteType: string, analysis: any): string {
+      return `You are an expert AI Web Designer.
 
-    return `Analyze this ${websiteType.toLowerCase()} website: ${websiteUrl}
+      CONTEXT:
+      We have analyzed a ${websiteType} website.
+      Summary of strategy: ${analysis.introduction || "Focus on conversion."}
 
-Target Market: ${targetMarket}
-Page Types to Focus On: ${pageTypes}
+      TASK:
+      Create a High-Fidelity HTML Mockup of the COMPLETE NEW Homepage based on the analysis.
 
-Please provide a comprehensive CRO audit covering:
+      DESIGN SYSTEM (CSS is already injected, use these classes):
+      - .container, .btn, .card, .grid-2, .grid-3, .framework-note, .stat
+      - Dark Mode Theme (Backgrounds are dark, Text is light/white)
 
-1. **Navigation & Site Structure**: Menu organization, search functionality, breadcrumbs
-2. **${websiteType === 'E-commerce' ? 'Homepage & Category Pages' : 'Homepage & Landing Pages'}**: Value proposition, hero sections, content hierarchy
-3. **${websiteType === 'E-commerce' ? 'Product Pages' : 'Form Pages'}**: ${websiteType === 'E-commerce' ? 'Product presentation, add-to-cart optimization, reviews' : 'Form design, field optimization, conversion flow'}
-4. **Mobile Experience**: Responsive design, touch targets, mobile-specific optimizations
-5. **Trust Signals**: Security badges, testimonials, social proof, credibility indicators
-6. **Psychological Persuasion**: Scarcity, urgency, social proof, authority principles
-7. **Technical Performance**: Load times, Core Web Vitals, technical barriers
-8. **Copywriting**: Headlines, CTAs, benefit communication
+      REQUIREMENTS:
+      - Return ONLY the HTML <body> content. Do not include <html>, <head> or <style> tags.
+      - Use <div class="framework-note">...</div> to annotate specific design decisions (e.g. "Audit Fix #12: Clarified Value Prop")
 
-Focus on realistic, implementable improvements with specific design and technical details.`;
+      STRUCTURE TO FOLLOW (Based on Best Practices):
+
+      SECTION 1: HERO & OFFER
+      - <section style="text-align: center; padding-top: 120px;">
+      - .container
+      - .framework-note (explaining the headline change)
+      - Main Headline (h1) - Clear, benefit-driven.
+      - Subheadline (p) - Addressing pain points.
+      - PROMINENT CTA (.btn)
+
+      SECTION 2: WHY CHOOSE US (Proof & Value)
+      - <section>
+      - .container
+      - h2 Title
+      - .grid-3
+      - 3 x .card
+          - .stat (e.g. "5x", "30%")
+          - h3 Benefit
+          - p Description
+
+      SECTION 3: SOCIAL PROOF / TESTIMONIAL
+      - <section>
+      - .container
+      - .grid-2 (align-items: center)
+      - Left: Big Testimonial Quote (h2) + Author Name/Title
+      - Right: Video Placeholder or Image (.card aspect-ratio 16/9)
+
+      SECTION 4: LEAD CAPTURE / FINAL CTA
+      - <section style="text-align: center;">
+      - .container
+      - h2 "Ready to [Benefit]?"
+      - .card (max-width: 450px; margin: 0 auto; text-align: left;)
+          - h3 Form Header
+          - Form inputs (email)
+          - Button (.btn width: 100%)
+          - "No credit card required" microcopy
+
+      OUTPUT FORMAT:
+      JSON: { "html": "<div>...</div>" }
+      `;
   }
 
   async generateAudit(
@@ -130,38 +287,39 @@ Focus on realistic, implementable improvements with specific design and technica
     websiteType: string,
     targetMarket: string,
     mode: string,
-    onProgress: (message: string) => void
+    onProgress: (message: string) => void,
+    websiteContent: string = ""
   ): Promise<AuditResult> {
-    onProgress('Connecting to OpenAI...');
-    
-    const systemPrompt = this.createSystemPrompt(websiteType, mode);
-    const userPrompt = this.createUserPrompt(websiteUrl, websiteType, targetMarket);
+    onProgress('Assembling CRO Expert Team...');
 
-    onProgress('Analyzing website structure...');
+    const systemPrompt = this.createSystemPrompt(websiteType);
+    let userPrompt = `Analyze this ${websiteType} website: ${websiteUrl}\nTarget Market: ${targetMarket}`;
+
+    if (websiteContent) {
+        userPrompt += `\n\nWEBSITE ACTUAL TEXT CONTENT (Use this for deep analysis):\n"""\n${websiteContent}\n"""\n\nPlease base your heuristic analysis on this actual content. Cite specific headlines, button text, and copy from the content provided.`;
+    } else {
+        userPrompt += `\n\nNote: Live content could not be fetched. Please infer the analysis based on standard patterns for this industry and URL structure.`;
+    }
+
+
+    onProgress('Conducting expert heuristic analysis...');
     
     try {
       const response = await this.makeRequest([
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt }
       ]);
-
-      onProgress('Processing recommendations...');
-
-      // Parse the JSON response
+      
       let parsedResponse;
       try {
-        // Clean the response in case there's any extra text
         const jsonMatch = response.match(/\{[\s\S]*\}/);
         const jsonString = jsonMatch ? jsonMatch[0] : response;
         parsedResponse = JSON.parse(jsonString);
       } catch (parseError) {
         console.error('Failed to parse OpenAI response:', response);
-        throw new Error('Failed to parse audit results. Please try again.');
+        throw new Error('Failed to parse audit results.');
       }
 
-      onProgress('Finalizing audit...');
-
-      // Normalize helpers to ensure consistent values
       const normalizeHML = (value: unknown): 'High' | 'Medium' | 'Low' => {
         const v = String(value || '').toLowerCase();
         if (v.startsWith('h')) return 'High';
@@ -169,14 +327,16 @@ Focus on realistic, implementable improvements with specific design and technica
         if (v.startsWith('m')) return 'Medium';
         return 'Medium';
       };
-      const deriveEffortFromCost = (cost: unknown): 'High' | 'Medium' | 'Low' => {
-        const c = String(cost || '').toLowerCase();
-        if (!c) return 'Medium';
-        if (/free|low|minor|quick|simple|<\$?100|under\s*\$?100/.test(c)) return 'Low';
-        if (/medium|~|\$?100-?\$?1000|\$?1\d\d|\$?\d{2,3}/.test(c)) return 'Medium';
-        if (/high|significant|substantial|>\$?1000|\$?\d{4,}/.test(c)) return 'High';
-        return 'Medium';
-      };
+
+       const deriveEffortFromCost = (cost: unknown): 'High' | 'Medium' | 'Low' => {
+          const c = String(cost || '').toLowerCase();
+          if (!c) return 'Medium';
+          if (/free|low|minor|quick|simple|<\$?100|under\s*\$?100/.test(c)) return 'Low';
+          if (/medium|~|\$?100-?\$?1000|\$?1\d\d|\$?\d{2,3}/.test(c)) return 'Medium';
+          if (/high|significant|substantial|>\$?1000|\$?\d{4,}/.test(c)) return 'High';
+          return 'Medium';
+        };
+
       const normalizedQuickWins = (parsedResponse.quickWins || []).map((qw: any) => ({
         id: qw.id,
         change: qw.change,
@@ -185,7 +345,6 @@ Focus on realistic, implementable improvements with specific design and technica
         priority: normalizeHML(qw.priority),
       }));
 
-      // Validate and structure the response
       const auditResult: AuditResult = {
         id: Date.now().toString(),
         websiteUrl,
@@ -196,29 +355,53 @@ Focus on realistic, implementable improvements with specific design and technica
         quickWins: normalizedQuickWins,
         abTests: parsedResponse.abTests || [],
         introduction: parsedResponse.introduction || 'Audit completed successfully.',
-        generatedAt: Date.now()
+        generatedAt: Date.now(),
+        heuristicAnalysis: parsedResponse.heuristicAnalysis || [],
+        pxlTests: parsedResponse.pxlTests || []
       };
 
-      // Validate that we have reasonable data
-      if (auditResult.recommendations.length === 0) {
-        throw new Error('No recommendations were generated. Please try again.');
-      }
-
       return auditResult;
-
-      // Validate that we have reasonable data
-      if (auditResult.recommendations.length === 0) {
-        throw new Error('No recommendations were generated. Please try again.');
-      }
-
-      return auditResult;
-
     } catch (error) {
-      console.error('OpenAI API Error:', error);
-      if (error instanceof Error) {
-        throw error;
-      }
-      throw new Error('Failed to generate audit. Please check your API key and try again.');
+      console.error('Failed to generate audit with OpenAI:', error);
+      throw error;
     }
+  }
+
+  async generateMockup(
+      auditResult: AuditResult,
+      onProgress: (message: string) => void
+  ): Promise<string> {
+      onProgress('UX Designer is creating high-fidelity mockups...');
+      
+      const designPrompt = this.createDesignPrompt(auditResult.websiteType, auditResult);
+      
+      try {
+          const response = await this.makeRequest([
+              { role: 'system', content: "You are an expert Frontend Developer and UX Designer." },
+              { role: 'user', content: designPrompt }
+          ]);
+          
+          const jsonMatch = response.match(/\{[\s\S]*\}/);
+          const jsonString = jsonMatch ? jsonMatch[0] : response;
+          const parsed = JSON.parse(jsonString);
+          
+          // Wrap with the full HTML shell here to ensure consistency
+          return `<!DOCTYPE html>
+          <html>
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>${DESIGN_CSS}</style>
+              <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+          </head>
+          <body>
+              ${parsed.html}
+          </body>
+          </html>`;
+          
+      } catch (error) {
+          console.error("Failed to generate design", error);
+          throw new Error("Failed to generate design mockup.");
+      }
   }
 }
