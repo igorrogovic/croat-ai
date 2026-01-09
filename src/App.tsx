@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import { Header } from './components/Header';
-import { OnboardingTooltip } from './components/OnboardingTooltip';
 import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
 import { AuditResults } from './components/AuditResults';
@@ -21,9 +20,9 @@ interface FormData {
 
 function App() {
   const { isSignedIn, user } = useUser();
-  const [showTooltip, setShowTooltip] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [loadingProgress, setLoadingProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [auditResult, setAuditResult] = useState<AuditResult | null>(null);
   const [formData, setFormData] = useState<FormData>({
@@ -37,12 +36,6 @@ function App() {
   useEffect(() => {
     // Clear expired results on app load
     clearExpiredResults();
-
-    // Check if tooltip was previously dismissed
-    const tooltipDismissed = localStorage.getItem('cro_tooltip_dismissed');
-    if (tooltipDismissed === 'true') {
-      setShowTooltip(false);
-    }
 
     // Load API key based on user authentication
     if (isSignedIn && user) {
@@ -72,11 +65,6 @@ function App() {
     }
   };
 
-  const handleTooltipDismiss = () => {
-    setShowTooltip(false);
-    localStorage.setItem('cro_tooltip_dismissed', 'true');
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -94,12 +82,20 @@ function App() {
     const cachedResult = loadAuditResult(formData.websiteUrl);
     if (cachedResult &&
         cachedResult.websiteType === formData.websiteType &&
-        cachedResult.targetMarket === formData.targetMarket) {
+        cachedResult.targetMarket === formData.targetMarket &&
+        // Ensure cache includes heuristic analysis if it's supposed to be there
+        (cachedResult.heuristicAnalysis && cachedResult.heuristicAnalysis.length > 0)) {
       setAuditResult(cachedResult);
       return;
     }
 
+    const handleProgress = (message: string, progress?: number) => {
+      setLoadingMessage(message);
+      setLoadingProgress(progress || 0);
+    };
+
     setIsLoading(true);
+    setLoadingProgress(0);
 
     try {
       const result = await generateAudit(
@@ -107,7 +103,7 @@ function App() {
         formData.websiteType,
         formData.targetMarket,
         'default', // Default mode since mode field is removed
-        setLoadingMessage,
+        handleProgress,
         apiKey
       );
 
@@ -252,7 +248,7 @@ function App() {
             )}
 
             {/* Loading State */}
-            {isLoading && <LoadingState message={loadingMessage} />}
+            {isLoading && <LoadingState message={loadingMessage} progress={loadingProgress} />}
 
             {/* Error State */}
             {error && <ErrorState message={error} onRetry={handleRetry} />}

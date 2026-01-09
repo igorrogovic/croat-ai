@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copado Demo Messaging Framework V2 (Competitor Optimized)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00A3E0;
+            --secondary: #00D2BE;
+            --purple: #8B5CF6;
+            --dark-bg: #0B1120;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --cta-gradient: linear-gradient(135deg, #00A3E0 0%, #00D2BE 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            margin: 0;
+            background-image: radial-gradient(circle at 80% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 90%, rgba(0, 163, 224, 0.15) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 100px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .tagline {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            color: #C4B5FD;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 40px;
+            border-radius: 99px;
+            background: var(--cta-gradient);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 163, 224, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px -5px rgba(0, 163, 224, 0.7);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--purple);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table th:first-child,
+        .comparison-table td:first-child {
+            text-align: left;
+            padding-left: 32px;
+        }
+
+        .comparison-table th {
+            background: rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .check {
+            color: #10B981;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .cross {
+            color: #64748B;
+            font-size: 1.2rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .framework-note {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px dashed var(--purple);
+            color: #A78BFA;
+            padding: 10px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO -->
+    <section style="text-align: center; padding-top: 140px;">
+        <div class="container">
+            <div class="framework-note">Strategy: Position as "Platform" vs. "Tool" (Gearset)</div><br>
+            <div class="tagline">The Only AI-Driven DevOps Platform for Salesforce</div>
+
+            <h1 style="font-size: 4rem; margin-bottom: 24px; letter-spacing: -0.02em;">
+                Don't Just Deploy. <span
+                    style="background: linear-gradient(to right, #00A3E0, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Orchestrate.</span>
+            </h1>
+
+            <p style="font-size: 1.4rem; color: var(--text-muted); max-width: 750px; margin: 0 auto 48px;">
+                Stop stitching together point solutions. Get the unified platform that connects Planning, Testing, and
+                Release on one native cloud.
+            </p>
+
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <a href="#" class="btn">Get Your Custom Demo</a>
+                <a href="#" class="btn btn-outline">Taking the Tour?</a>
+            </div>
+
+            <div style="margin-top: 60px; opacity: 0.7;">
+                <p
+                    style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">
+                    Trusted by Industry Leaders</p>
+                <div
+                    style="font-size: 1.5rem; font-weight: 700; display: flex; gap: 40px; justify-content: center; margin-top: 20px; filter: grayscale(100%);">
+                    <span>Coca-Cola</span>
+                    <span>T-Mobile</span>
+                    <span>MassMutual</span>
+                    <span>Siemens</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPETITOR COMPARISON -->
+    <section>
+        <div class="container">
+            <div class="framework-note">Strategy: Expose competitors' lack of "End-to-End" depth</div>
+            <h2 style="text-align: center;">Why Leaders Upgrade from Simple Deployment Tools</h2>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th width="40%">Feature</th>
+                        <th width="20%" style="color: var(--primary);">Copado</th>
+                        <th width="20%">Deployment Tools</th>
+                        <th width="20%">Legacy CI/CD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Unified Low-Code & Pro-Code</strong><br><span
+                                style="font-size: 0.8rem; color: var(--text-muted);">Admins & devs collaborate in one
+                                UI</span></td>
+                        <td><span class="check">●</span></td>
+                        <td><span class="cross">○</span></td>
+                        <td><span class="cross">○</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI-Powered Test Agents</strong><br><span
+                                style="font-size: 0.8rem; color: var(--text-muted);">Self-healing tests, no brittle
+                                scripts</span></td>
+                        <td><span class="check">●</span></td>
+                        <td><span class="cross">○</span></td>
+                        <td><span class="cross">○</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integrated Agile Planning</strong><br><span
+                                style="font-size: 0.8rem; color: var(--text-muted);">User stories linked to
+                                metadata</span></td>
+                        <td><span class="check">●</span></td>
+                        <td><span class="cross">○</span></td>
+                        <td><span class="cross">○</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>FedRAMP / DoD Security</strong><br><span
+                                style="font-size: 0.8rem; color: var(--text-muted);">Enterprise-grade compliance</span>
+                        </td>
+                        <td><span class="check">●</span></td>
+                        <td><span class="cross">○</span></td>
+                        <td><span class="check">●</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- AI VALUE -->
+    <section>
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <div class="framework-note">Strategy: Showcase PlanAgent & TestAgent</div>
+                    <h2>The Intelligent Way to Release</h2>
+                    <p style="font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px;">
+                        Other tools just move metadata. Copado uses AI to predict conflicts, heal broken tests, and
+                        automate the "boring stuff."
+                    </p>
+
+                    <div class="card" style="margin-bottom: 20px; border-left: 4px solid var(--purple);">
+                        <h3>🧠 Copado PlanAgent</h3>
+                        <p style="margin: 0; color: var(--text-muted);">Turn requirement docs into deployment-ready user
+                            stories instantly.</p>
+                    </div>
+
+                    <div class="card" style="border-left: 4px solid var(--secondary);">
+                        <h3>🤖 Copado TestAgent</h3>
+                        <p style="margin: 0; color: var(--text-muted);">Run thousands of tests in parallel. If UI
+                            changes break a script, AI fixes it for you.</p>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <div
+                        style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(0, 163, 224, 0.2)); border-radius: 20px; padding: 40px; border: 1px solid var(--border); box-shadow: 0 0 50px rgba(139, 92, 246, 0.2);">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">⚡</div>
+                        <h3>20x Faster Releases</h3>
+                        <p>Average customer improvement</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section style="background: rgba(0,0,0,0.2);">
+        <div class="container" style="text-align: center;">
+            <h2>See Copado in Action</h2>
+            <p style="color: var(--text-muted); margin-bottom: 40px;">Get a personalized walkthrough of the features
+                that matter to you.</p>
+
+            <div class="card"
+                style="max-width: 500px; margin: 0 auto; text-align: left; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                <form style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <label style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; display: block;">Business
+                            Email</label>
+                        <input type="email" placeholder="you@company.com"
+                            style="width: 100%; padding: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: white;">
+                    </div>
+                    <div>
+                        <label
+                            style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; display: block;">Role</label>
+                        <select
+                            style="width: 100%; padding: 14px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; color: var(--text-muted);">
+                            <option>Select your role...</option>
+                            <option>Salesforce Admin</option>
+                            <option>Developer</option>
+                            <option>Release Manager</option>
+                            <option>CIO / IT Leader</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn" style="width: 100%; margin-top: 10px;">Schedule Demo</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>

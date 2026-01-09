@@ -25,6 +25,18 @@ export interface ABTest {
   description: string;
 }
 
+export interface HeuristicItem {
+  question: string;
+  score: number;
+  observation: string;
+  recommendation: string;
+}
+
+export interface HeuristicCategory {
+  category: string;
+  items: HeuristicItem[];
+}
+
 export interface AuditResult {
   id: string;
   websiteUrl: string;
@@ -35,6 +47,9 @@ export interface AuditResult {
   quickWins: QuickWin[];
   abTests: ABTest[];
   introduction: string;
+  mockDesign?: string;
+  heuristicAnalysis?: HeuristicCategory[];
+  pxlTests?: import('../utils/pxlFramework').PXLItem[];
   generatedAt: number;
 }
 
