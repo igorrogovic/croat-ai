@@ -198,7 +198,7 @@ Be harsh and specific. Provide real examples, not generic advice."""
         )
         self._add_item(cat, "Does copy call out WHO it's for?", result)
         
-        # 1.4
+        # 1.4 
         result = self._analyze_item(
             "Is there a clear, visually dominant page goal that leads into the funnel?",
             f"CTAs found: {', '.join(self.ctas) if self.ctas else 'None'}",
